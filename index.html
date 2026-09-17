@@ -1,0 +1,3314 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>HTML- &amp; CSS-Spickzettel</title>
+    <style>
+        :root {
+            --bg: #15171b;
+            --surface: #1b1e24;
+            --surface-2: #20242c;
+            --fg: #e6e8eb;
+            --muted: #8a919c;
+            --line: #2a2e36;
+            --accent: var(--accent-html);
+            --accent-html: #98c379;
+            --accent-css: #e06c75;
+            --radius: 8px;
+            --space-1: 4px;
+            --space-2: 8px;
+            --space-3: 12px;
+            --space-4: 16px;
+            --space-6: 24px;
+            --space-8: 32px;
+
+            --tok-tag: #61afef;
+            --tok-attr: #d19a66;
+            --tok-string: #98c379;
+            --tok-comment: #7d8590;
+            --tok-selector: #e06c75;
+            --tok-property: #56b6c2;
+            --tok-value: #98c379;
+        }
+
+        :root[data-mode="css"] {
+            --accent: var(--accent-css);
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            background: var(--bg);
+            color: var(--fg);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            font-size: 15px;
+            line-height: 1.65;
+        }
+
+        header {
+            padding: var(--space-6) var(--space-8);
+            border-bottom: 1px solid var(--line);
+        }
+
+        header h1 {
+            margin: 0 0 var(--space-1);
+            font-size: 20px;
+        }
+
+        header p {
+            margin: 0;
+            color: var(--muted);
+            font-size: 14px;
+        }
+
+        .layout {
+            display: flex;
+            align-items: flex-start;
+        }
+
+        nav {
+            flex: 0 0 280px;
+            width: 280px;
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            overflow-y: auto;
+            background: var(--surface);
+            border-right: 1px solid var(--line);
+            padding: var(--space-4);
+        }
+
+        .mode-switch {
+            display: flex;
+            gap: var(--space-1);
+            padding: var(--space-1);
+            margin-bottom: var(--space-4);
+            background: var(--surface-2);
+            border: 1px solid var(--line);
+            border-radius: var(--radius);
+        }
+
+        .mode-btn {
+            flex: 1;
+            padding: var(--space-2) var(--space-3);
+            background: transparent;
+            border: none;
+            border-radius: 6px;
+            color: var(--muted);
+            font-family: inherit;
+            font-size: 13px;
+            font-weight: 600;
+            letter-spacing: 0.02em;
+            cursor: pointer;
+            transition: background 150ms ease-out, color 150ms ease-out;
+        }
+
+        .mode-btn:hover {
+            color: var(--fg);
+        }
+
+        .mode-btn[aria-selected="true"][data-mode-btn="html"] {
+            background: rgba(152, 195, 121, 0.15);
+            color: var(--accent-html);
+        }
+
+        .mode-btn[aria-selected="true"][data-mode-btn="css"] {
+            background: rgba(224, 108, 117, 0.15);
+            color: var(--accent-css);
+        }
+
+        .nav-search {
+            margin-bottom: var(--space-4);
+        }
+
+        .nav-search input {
+            width: 100%;
+            background: var(--surface-2);
+            border: 1px solid var(--line);
+            color: var(--fg);
+            border-radius: var(--radius);
+            padding: var(--space-2) var(--space-3);
+            font-size: 13px;
+            font-family: inherit;
+            transition: border-color 180ms ease-out;
+        }
+
+        .nav-search input:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+
+        .nav-search input::placeholder {
+            color: var(--muted);
+        }
+
+        nav details {
+            margin-bottom: var(--space-1);
+        }
+
+        nav summary {
+            cursor: pointer;
+            list-style: none;
+            padding: var(--space-2) var(--space-2);
+            border-radius: var(--radius);
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--muted);
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            transition: background 150ms ease-out, color 150ms ease-out;
+        }
+
+        nav summary::-webkit-details-marker { display: none; }
+
+        nav summary::before {
+            content: "›";
+            display: inline-block;
+            width: 12px;
+            margin-right: var(--space-1);
+            transition: transform 180ms ease-out;
+        }
+
+        nav details[open] summary::before {
+            transform: rotate(90deg);
+        }
+
+        nav summary:hover {
+            background: var(--surface-2);
+            color: var(--fg);
+        }
+
+        nav ul {
+            list-style: none;
+            margin: 0;
+            padding: 0 0 var(--space-2) var(--space-4);
+        }
+
+        nav li { margin: 0; }
+
+        nav a {
+            display: block;
+            padding: var(--space-1) var(--space-2);
+            border-radius: var(--radius);
+            color: var(--fg);
+            text-decoration: none;
+            font-size: 13px;
+            transition: background 150ms ease-out, color 150ms ease-out;
+        }
+
+        nav a:hover {
+            background: var(--surface-2);
+            color: var(--accent);
+        }
+
+        main {
+            flex: 1;
+            min-width: 0;
+            max-width: 760px;
+            margin: 0 auto;
+            padding: var(--space-8);
+        }
+
+        section {
+            margin-bottom: var(--space-8);
+            padding-bottom: var(--space-8);
+            border-bottom: 1px solid var(--line);
+        }
+
+        section:last-child {
+            border-bottom: none;
+        }
+
+        h2 {
+            font-size: 20px;
+            margin: 0 0 var(--space-4);
+        }
+
+        h3 {
+            font-size: 15px;
+            margin: var(--space-6) 0 var(--space-2);
+            color: var(--muted);
+        }
+
+        p { margin: 0 0 var(--space-3); }
+
+        ul, ol { padding-left: var(--space-6); margin: 0 0 var(--space-4); }
+        li { margin-bottom: var(--space-1); }
+
+        strong { color: var(--fg); }
+        em { color: var(--fg); }
+
+        a { color: var(--accent); }
+
+        pre {
+            background: var(--surface-2);
+            border: 1px solid var(--line);
+            border-radius: var(--radius);
+            padding: var(--space-4);
+            overflow-x: auto;
+            margin: 0 0 var(--space-4);
+        }
+
+        pre code {
+            font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+            font-size: 13px;
+            line-height: 1.6;
+            color: var(--fg);
+        }
+
+        :not(pre) > code {
+            background: var(--surface);
+            border: 1px solid var(--line);
+            border-radius: 4px;
+            padding: 1px var(--space-1);
+            font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+            font-size: 0.9em;
+        }
+
+        .tok-tag { color: var(--tok-tag); }
+        .tok-attr { color: var(--tok-attr); }
+        .tok-string { color: var(--tok-string); }
+        .tok-comment { color: var(--tok-comment); font-style: italic; }
+        .tok-punct { color: var(--muted); }
+        .tok-selector { color: var(--tok-selector); }
+        .tok-property { color: var(--tok-property); }
+        .tok-value { color: var(--tok-value); }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: var(--space-4);
+            font-size: 13px;
+        }
+
+        th, td {
+            text-align: left;
+            padding: var(--space-2) var(--space-3);
+            border-bottom: 1px solid var(--line);
+        }
+
+        th {
+            color: var(--muted);
+            font-weight: 600;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+        }
+
+        footer {
+            padding: var(--space-6) var(--space-8);
+            border-top: 1px solid var(--line);
+            color: var(--muted);
+            font-size: 13px;
+        }
+
+        .anatomy {
+            display: flex;
+            flex-wrap: wrap;
+            gap: var(--space-3);
+            margin: 0 0 var(--space-6);
+        }
+
+        .anatomy-part {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: var(--space-2);
+            padding: var(--space-3) var(--space-4);
+            background: var(--surface-2);
+            border: 1px solid var(--line);
+            border-radius: var(--radius);
+        }
+
+        .anatomy-part code {
+            background: none;
+            border: none;
+            padding: 0;
+            font-size: 15px;
+        }
+
+        .anatomy-tag code { color: var(--tok-tag); }
+        .anatomy-content code { color: var(--fg); }
+
+        .anatomy-label {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            color: var(--muted);
+        }
+
+        .anatomy-tag .anatomy-label { color: var(--tok-tag); }
+
+        .anatomy-whole {
+            text-align: center;
+            padding-top: var(--space-4);
+        }
+
+        .anatomy-whole-code {
+            display: inline-block;
+            padding-bottom: var(--space-2);
+            border-bottom: 2px solid var(--accent);
+            font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+            font-size: 17px;
+            color: var(--fg);
+        }
+
+        .anatomy-whole-tick {
+            width: 2px;
+            height: var(--space-3);
+            background: var(--accent);
+            margin: 0 auto;
+        }
+
+        .anatomy-whole-label {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--accent);
+            margin-top: var(--space-1);
+        }
+
+        .box-model {
+            margin: 0 0 var(--space-6);
+        }
+
+        .box-model-layer {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            border-radius: var(--radius);
+        }
+
+        .box-model-label {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            color: var(--muted);
+            padding-bottom: var(--space-2);
+        }
+
+        .box-model-margin {
+            background: repeating-linear-gradient(45deg, var(--surface-2), var(--surface-2) 6px, var(--surface) 6px, var(--surface) 12px);
+            border: 1px dashed var(--line);
+            padding: var(--space-4);
+        }
+
+        .box-model-border {
+            background: var(--surface-2);
+            border: 2px solid var(--tok-selector);
+            padding: var(--space-2);
+        }
+
+        .box-model-padding {
+            background: rgba(152, 195, 121, 0.12);
+            padding: var(--space-4);
+        }
+
+        .box-model-content {
+            background: var(--surface);
+            border: 1px solid var(--line);
+            min-width: 140px;
+            padding: var(--space-3) var(--space-6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+            font-size: 13px;
+            color: var(--fg);
+        }
+
+        @media (max-width: 720px) {
+            .layout { flex-direction: column; }
+            nav {
+                position: static;
+                flex: none;
+                width: auto;
+                height: auto;
+                overflow-y: visible;
+                border-right: none;
+                border-bottom: 1px solid var(--line);
+            }
+            main { padding: var(--space-6); }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+
+        <h1>HTML-Spickzettel</h1>
+
+        <p>
+            Grundlagen für eine saubere <code>index.html</code> —
+            Struktur, Semantik und die wichtigsten Tags im Überblick.
+        </p>
+
+    </header>
+
+    <div class="layout">
+
+    <nav aria-label="Inhaltsverzeichnis">
+
+        <div class="mode-switch" role="tablist" aria-label="Sprache wählen">
+            <button type="button" class="mode-btn" data-mode-btn="html" role="tab" aria-selected="true">HTML</button>
+            <button type="button" class="mode-btn" data-mode-btn="css" role="tab" aria-selected="false">CSS</button>
+        </div>
+
+        <div class="nav-search">
+            <input type="search" id="navSearch" placeholder="Suchen…" aria-label="Suche im Inhaltsverzeichnis" autocomplete="off">
+        </div>
+
+        <div class="nav-mode" data-mode="html">
+
+        <details>
+            <summary>Grundlagen</summary>
+            <ul>
+                <li><a href="#wie-html-funktioniert">Wie HTML grundsätzlich funktioniert</a></li>
+                <li><a href="#grundgeruest">Grundgerüst einer HTML-Datei</a></li>
+                <li><a href="#ueberschriften">Überschriften</a></li>
+                <li><a href="#text">Text, Zeilenumbruch &amp; Hervorhebung</a></li>
+            </ul>
+        </details>
+
+        <details>
+            <summary>Links, Navigation &amp; Bilder</summary>
+            <ul>
+                <li><a href="#links">Links</a></li>
+                <li><a href="#navigation">Das nav-Element</a></li>
+                <li><a href="#bilder">Bilder</a></li>
+            </ul>
+        </details>
+
+        <details>
+            <summary>Listen, Bereiche &amp; Tabellen</summary>
+            <ul>
+                <li><a href="#listen">Listen</a></li>
+                <li><a href="#bereiche">Bereiche &amp; semantische Elemente</a></li>
+                <li><a href="#tabellen">Tabellen</a></li>
+                <li><a href="#buttons">Buttons</a></li>
+            </ul>
+        </details>
+
+        <details>
+            <summary>Attribute &amp; Kommentare</summary>
+            <ul>
+                <li><a href="#attribute">Attribute, id &amp; class</a></li>
+                <li><a href="#kommentare">Kommentare</a></li>
+            </ul>
+        </details>
+
+        <details>
+            <summary>Beispiele &amp; Projektaufbau</summary>
+            <ul>
+                <li><a href="#beispiel">Vollständiges Beispiel</a></li>
+                <li><a href="#mehrseitig">Mehrseitige Website</a></li>
+            </ul>
+        </details>
+
+        <details>
+            <summary>Sauberer Code &amp; Denkweise</summary>
+            <ul>
+                <li><a href="#sauberer-code">Einrückung &amp; Verschachtelung</a></li>
+                <li><a href="#html-css-js">HTML, CSS &amp; JavaScript</a></li>
+                <li><a href="#vorgehen">Vorgehen beim Seitenaufbau</a></li>
+                <li><a href="#haeufige-fehler">Häufige Fehler</a></li>
+            </ul>
+        </details>
+
+        <details>
+            <summary>Referenz</summary>
+            <ul>
+                <li><a href="#referenz">Tags &amp; Attribute im Überblick</a></li>
+            </ul>
+        </details>
+
+        </div>
+
+        <div class="nav-mode" data-mode="css" hidden>
+
+        <details>
+            <summary>Grundlagen</summary>
+            <ul>
+                <li><a href="#css-was-ist-css">Was ist CSS?</a></li>
+                <li><a href="#css-einbinden">CSS einbinden</a></li>
+                <li><a href="#css-syntax">Grundlegende Syntax</a></li>
+            </ul>
+        </details>
+
+        <details>
+            <summary>Selektoren</summary>
+            <ul>
+                <li><a href="#css-selektoren">Elemente, Klassen &amp; IDs</a></li>
+                <li><a href="#css-selektoren-kombi">Mehrere &amp; verschachtelte Selektoren</a></li>
+                <li><a href="#css-kaskade">Kaskade &amp; Spezifität</a></li>
+            </ul>
+        </details>
+
+        <details>
+            <summary>Eigenschaften &amp; Werte</summary>
+            <ul>
+                <li><a href="#css-eigenschaft-wert">Eigenschaft &amp; Wert</a></li>
+                <li><a href="#css-farben">Farben</a></li>
+                <li><a href="#css-text">Text &amp; Schrift</a></li>
+                <li><a href="#css-einheiten">Maßeinheiten</a></li>
+            </ul>
+        </details>
+
+        <details>
+            <summary>Box-Modell &amp; Abstände</summary>
+            <ul>
+                <li><a href="#css-box-model">Das Box-Modell</a></li>
+                <li><a href="#css-groesse">Breite, Höhe &amp; box-sizing</a></li>
+                <li><a href="#css-abstaende-detail">Abstände im Detail</a></li>
+                <li><a href="#css-hintergrund-rahmen">Hintergrund &amp; Rahmen</a></li>
+            </ul>
+        </details>
+
+        <details>
+            <summary>Layout mit Flexbox</summary>
+            <ul>
+                <li><a href="#css-display">display-Grundlagen</a></li>
+                <li><a href="#css-flexbox">Flexbox-Grundlagen</a></li>
+                <li><a href="#css-flex-ausrichten">Flex-Items ausrichten</a></li>
+                <li><a href="#css-zentrieren">Zentrieren</a></li>
+            </ul>
+        </details>
+
+        <details>
+            <summary>Position &amp; Interaktion</summary>
+            <ul>
+                <li><a href="#css-position">position</a></li>
+                <li><a href="#css-hover">Hover &amp; Pseudoklassen</a></li>
+                <li><a href="#css-vererbung">Vererbung</a></li>
+            </ul>
+        </details>
+
+        <details>
+            <summary>Responsive &amp; Struktur</summary>
+            <ul>
+                <li><a href="#css-media-queries">Media Queries</a></li>
+                <li><a href="#css-struktur">CSS-Dateien strukturieren</a></li>
+            </ul>
+        </details>
+
+        <details>
+            <summary>Beispiele &amp; Referenz</summary>
+            <ul>
+                <li><a href="#css-beispiel">Vollständiges Beispiel</a></li>
+                <li><a href="#css-denkweise">Denkweise bei CSS</a></li>
+                <li><a href="#css-referenz">Eigenschaften &amp; Werte im Überblick</a></li>
+                <li><a href="#css-mini">Mini-Spickzettel</a></li>
+                <li><a href="#css-zusammenfassung">Zusammenfassung</a></li>
+            </ul>
+        </details>
+
+        </div>
+
+    </nav>
+
+    <main>
+
+    <div class="content-mode" data-mode="html">
+
+        <section id="wie-html-funktioniert">
+
+            <h2>Wie HTML grundsätzlich funktioniert</h2>
+
+            <p>
+                HTML besteht aus Elementen. Ein Element sagt dem Browser:
+                „Dieser Teil der Datei ist eine Überschrift / ein Absatz /
+                ein Link / ein Bild / eine Liste usw.“
+            </p>
+
+            <p>Ein sehr einfaches Beispiel:</p>
+
+            <pre><code>&lt;p&gt;Hallo Welt!&lt;/p&gt;</code></pre>
+
+            <p>Das bedeutet:</p>
+
+            <div class="anatomy">
+                <div class="anatomy-part anatomy-tag">
+                    <code>&lt;p&gt;</code>
+                    <span class="anatomy-label">öffnendes Tag</span>
+                </div>
+                <div class="anatomy-part anatomy-content">
+                    <code>Hallo Welt!</code>
+                    <span class="anatomy-label">Inhalt</span>
+                </div>
+                <div class="anatomy-part anatomy-tag">
+                    <code>&lt;/p&gt;</code>
+                    <span class="anatomy-label">schließendes Tag</span>
+                </div>
+            </div>
+
+            <p>Zusammen ergibt das ein Element:</p>
+
+            <div class="anatomy-whole">
+                <div class="anatomy-whole-code"><span class="tok-punct">&lt;</span><span class="tok-tag">p</span><span class="tok-punct">&gt;</span>Hallo Welt!<span class="tok-punct">&lt;/</span><span class="tok-tag">p</span><span class="tok-punct">&gt;</span></div>
+                <div class="anatomy-whole-tick"></div>
+                <div class="anatomy-whole-label">Element</div>
+            </div>
+
+        </section>
+
+        <section id="grundgeruest">
+
+            <h2>Grundgerüst einer HTML-Datei</h2>
+
+            <p>
+                Jede HTML-Datei beginnt grundsätzlich mit diesem Aufbau:
+            </p>
+
+            <pre><code>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;title&gt;Meine Website&lt;/title&gt;
+&lt;/head&gt;
+
+&lt;body&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+
+            <h3>Bedeutung der einzelnen Teile</h3>
+
+            <p>
+                <code>&lt;!DOCTYPE html&gt;</code> sagt dem Browser, dass es sich
+                um ein modernes HTML5-Dokument handelt.
+            </p>
+
+            <p>
+                <code>&lt;html&gt;</code> enthält die komplette Website.
+            </p>
+
+            <p>
+                <code>&lt;head&gt;</code> enthält Informationen über die Website,
+                die normalerweise nicht direkt auf der Seite angezeigt werden.
+            </p>
+
+            <p>
+                <code>&lt;meta charset="UTF-8"&gt;</code> sorgt dafür, dass Umlaute
+                wie <code>ä</code>, <code>ö</code>, <code>ü</code> und Sonderzeichen
+                korrekt dargestellt werden.
+            </p>
+
+            <p>
+                <code>&lt;title&gt;</code> — der Text erscheint oben im Browser-Tab.
+            </p>
+
+            <p>
+                <code>&lt;body&gt;</code> — hier kommt alles hinein, was auf der
+                Website sichtbar sein soll.
+            </p>
+
+            <h3>Sprache der Website</h3>
+
+            <p>
+                Das <code>&lt;html&gt;</code>-Element sollte die Sprache der Seite
+                angeben, für eine deutsche Website:
+            </p>
+
+            <pre><code>&lt;html lang="de"&gt;</code></pre>
+
+            <p>
+                Für Englisch entsprechend <code>&lt;html lang="en"&gt;</code>.
+            </p>
+
+        </section>
+
+        <section id="ueberschriften">
+
+            <h2>Überschriften</h2>
+
+            <p>
+                HTML hat sechs Überschriftenebenen:
+            </p>
+
+            <pre><code>&lt;h1&gt;Größte Überschrift&lt;/h1&gt;
+
+&lt;h2&gt;Zweite Ebene&lt;/h2&gt;
+
+&lt;h3&gt;Dritte Ebene&lt;/h3&gt;
+
+&lt;h4&gt;Vierte Ebene&lt;/h4&gt;
+
+&lt;h5&gt;Fünfte Ebene&lt;/h5&gt;
+
+&lt;h6&gt;Kleinste Überschrift&lt;/h6&gt;</code></pre>
+
+            <p>
+                <code>h1</code> ist normalerweise die wichtigste Hauptüberschrift
+                der Seite. Die Reihenfolge sollte logisch sein — nicht einfach eine
+                <code>h5</code> verwenden, wenn eigentlich eine Unterüberschrift von
+                <code>h1</code> gemeint ist (also <code>h2</code>).
+            </p>
+
+            <p>Richtiges Beispiel:</p>
+
+            <pre><code>&lt;h1&gt;Mein Bergprojekt&lt;/h1&gt;
+
+&lt;h2&gt;Meine Touren&lt;/h2&gt;
+
+&lt;h3&gt;Alpen&lt;/h3&gt;</code></pre>
+
+        </section>
+
+        <section id="text">
+
+            <h2>Text, Zeilenumbruch &amp; Hervorhebung</h2>
+
+            <h3>Normaler Text</h3>
+
+            <p>
+                Für normalen Text benutzt man <code>&lt;p&gt;</code>. Ein Absatz
+                sollte normalerweise einen zusammenhängenden Textblock enthalten.
+            </p>
+
+            <pre><code>&lt;p&gt;Das ist der erste Absatz.&lt;/p&gt;
+
+&lt;p&gt;Das ist der zweite Absatz.&lt;/p&gt;</code></pre>
+
+            <h3>Zeilenumbruch</h3>
+
+            <p>
+                Wenn innerhalb eines Textes ein Zeilenumbruch gewünscht ist, wird
+                <code>&lt;br&gt;</code> verwendet. Es braucht kein schließendes
+                <code>&lt;/br&gt;</code>.
+            </p>
+
+            <pre><code>&lt;p&gt;
+    Montag&lt;br&gt;
+    Dienstag&lt;br&gt;
+    Mittwoch
+&lt;/p&gt;</code></pre>
+
+            <h3>Text hervorheben</h3>
+
+            <p>
+                Für wichtigen Text: <code>&lt;strong&gt;Wichtiger Text&lt;/strong&gt;</code>.
+                Für Betonung: <code>&lt;em&gt;Betonter Text&lt;/em&gt;</code>.
+            </p>
+
+            <p>
+                Für einfache Webseiten können auch <code>&lt;b&gt;</code> (fett) und
+                <code>&lt;i&gt;</code> (kursiv) verwendet werden — semantisch
+                sinnvoller sind aber meistens <code>strong</code> und <code>em</code>.
+            </p>
+
+        </section>
+
+        <section id="links">
+
+            <h2>Links</h2>
+
+            <p>
+                Ein Link wird mit <code>&lt;a&gt;</code> erstellt, <code>href</code>
+                bestimmt das Ziel:
+            </p>
+
+            <pre><code>&lt;a href="https://example.com"&gt;Diese Website öffnen&lt;/a&gt;</code></pre>
+
+            <h3>Link zu einer anderen HTML-Seite</h3>
+
+            <p>
+                Wenn im selben Ordner beispielsweise diese Dateien liegen:
+            </p>
+
+            <pre><code>index.html
+touren.html
+ausruestung.html
+kontakt.html</code></pre>
+
+            <p>dann kann man verlinken:</p>
+
+            <pre><code>&lt;a href="touren.html"&gt;Touren&lt;/a&gt;
+
+&lt;a href="ausruestung.html"&gt;Ausrüstung&lt;/a&gt;
+
+&lt;a href="kontakt.html"&gt;Kontakt&lt;/a&gt;</code></pre>
+
+            <h3>Datei in einem Unterordner</h3>
+
+            <p>Wenn die Struktur so aussieht:</p>
+
+            <pre><code>index.html
+touren/
+    touren.html</code></pre>
+
+            <p>dann:</p>
+
+            <pre><code>&lt;a href="touren/touren.html"&gt;Touren&lt;/a&gt;</code></pre>
+
+            <h3>Eine Ebene zurück</h3>
+
+            <p>
+                Wenn man sich beispielsweise in <code>touren/tour.html</code>
+                befindet und zurück zu <code>index.html</code> möchte:
+            </p>
+
+            <pre><code>&lt;a href="../index.html"&gt;Startseite&lt;/a&gt;</code></pre>
+
+            <p>
+                <code>..</code> bedeutet: eine Verzeichnisebene nach oben.
+            </p>
+
+            <h3>E-Mail-Link</h3>
+
+            <pre><code>&lt;a href="mailto:beispiel@example.com"&gt;
+    E-Mail schreiben
+&lt;/a&gt;</code></pre>
+
+            <p>
+                Beim Anklicken wird das entsprechende E-Mail-Programm geöffnet.
+            </p>
+
+            <h3>Telefonnummer</h3>
+
+            <pre><code>&lt;a href="tel:+491234567890"&gt;
+    +49 123 4567890
+&lt;/a&gt;</code></pre>
+
+            <p>
+                Auf unterstützten Geräten kann dadurch direkt angerufen werden.
+            </p>
+
+            <h3>Externe Links</h3>
+
+            <p>
+                Wenn der Link in einem neuen Tab geöffnet werden soll, sollte aus
+                Sicherheitsgründen zusätzlich <code>rel="noopener noreferrer"</code>
+                verwendet werden:
+            </p>
+
+            <pre><code>&lt;a
+    href="https://www.example.com"
+    target="_blank"
+    rel="noopener noreferrer"
+&gt;
+    Externe Website öffnen
+&lt;/a&gt;</code></pre>
+
+        </section>
+
+        <section id="navigation">
+
+            <h2>Das nav-Element</h2>
+
+            <p>Eine einfache Navigation kann so aussehen:</p>
+
+            <pre><code>&lt;nav&gt;
+    &lt;a href="index.html"&gt;Startseite&lt;/a&gt;
+    &lt;a href="touren.html"&gt;Touren&lt;/a&gt;
+    &lt;a href="ausruestung.html"&gt;Ausrüstung&lt;/a&gt;
+    &lt;a href="ueber-mich.html"&gt;Über mich&lt;/a&gt;
+&lt;/nav&gt;</code></pre>
+
+            <p>
+                <code>&lt;nav&gt;</code> sagt dem Browser: dieser Bereich enthält
+                Navigationslinks.
+            </p>
+
+        </section>
+
+        <section id="bilder">
+
+            <h2>Bilder</h2>
+
+            <p>Ein Bild wird mit <code>&lt;img&gt;</code> eingefügt:</p>
+
+            <pre><code>&lt;img src="bild.jpg" alt="Beschreibung des Bildes"&gt;</code></pre>
+
+            <p>
+                <code>src</code> gibt an, wo das Bild liegt. <code>alt</code>
+                beschreibt das Bild.
+            </p>
+
+            <pre><code>&lt;img src="berg.jpg" alt="Berggipfel in den Alpen"&gt;</code></pre>
+
+            <h3>Bild aus einem Unterordner</h3>
+
+            <p>Ordner:</p>
+
+            <pre><code>index.html
+bilder/
+    berg.jpg</code></pre>
+
+            <p>Dann:</p>
+
+            <pre><code>&lt;img src="bilder/berg.jpg" alt="Berggipfel"&gt;</code></pre>
+
+        </section>
+
+        <section id="listen">
+
+            <h2>Listen</h2>
+
+            <h3>Ungeordnete Liste</h3>
+
+            <p>Für Stichpunkte:</p>
+
+            <pre><code>&lt;ul&gt;
+    &lt;li&gt;Steigeisen&lt;/li&gt;
+    &lt;li&gt;Eispickel&lt;/li&gt;
+    &lt;li&gt;Seil&lt;/li&gt;
+&lt;/ul&gt;</code></pre>
+
+            <h3>Geordnete Liste</h3>
+
+            <p>Für eine Reihenfolge:</p>
+
+            <pre><code>&lt;ol&gt;
+    &lt;li&gt;Rucksack packen&lt;/li&gt;
+    &lt;li&gt;Zum Ausgangspunkt fahren&lt;/li&gt;
+    &lt;li&gt;Aufsteigen&lt;/li&gt;
+&lt;/ol&gt;</code></pre>
+
+            <h3>Verschachtelte Listen</h3>
+
+            <p>Listen können ineinander liegen:</p>
+
+            <pre><code>&lt;ul&gt;
+    &lt;li&gt;
+        Hochtour
+        &lt;ul&gt;
+            &lt;li&gt;Steigeisen&lt;/li&gt;
+            &lt;li&gt;Eispickel&lt;/li&gt;
+            &lt;li&gt;Gurt&lt;/li&gt;
+        &lt;/ul&gt;
+    &lt;/li&gt;
+
+    &lt;li&gt;
+        Klettertour
+        &lt;ul&gt;
+            &lt;li&gt;Klettergurt&lt;/li&gt;
+            &lt;li&gt;Seil&lt;/li&gt;
+            &lt;li&gt;Karabiner&lt;/li&gt;
+        &lt;/ul&gt;
+    &lt;/li&gt;
+&lt;/ul&gt;</code></pre>
+
+        </section>
+
+        <section id="bereiche">
+
+            <h2>Bereiche &amp; semantische Elemente</h2>
+
+            <h3>div — allgemeiner Container</h3>
+
+            <pre><code>&lt;div&gt;
+    &lt;h2&gt;Meine Tour&lt;/h2&gt;
+    &lt;p&gt;Informationen zur Tour.&lt;/p&gt;
+&lt;/div&gt;</code></pre>
+
+            <p>Ein <code>div</code> kann mehrere Elemente zusammenfassen.</p>
+
+            <p>
+                Für eine sauberere Struktur gibt es zusätzlich spezielle,
+                semantische Elemente:
+            </p>
+
+            <h3>header — Kopfbereich der Seite</h3>
+
+            <pre><code>&lt;header&gt;
+    &lt;h1&gt;Mein Bergprojekt&lt;/h1&gt;
+    &lt;p&gt;Meine Touren und Erfahrungen&lt;/p&gt;
+&lt;/header&gt;</code></pre>
+
+            <h3>main — der wichtigste Inhalt der Seite</h3>
+
+            <pre><code>&lt;main&gt;
+    &lt;h2&gt;Willkommen&lt;/h2&gt;
+    &lt;p&gt;Das ist der Hauptinhalt.&lt;/p&gt;
+&lt;/main&gt;</code></pre>
+
+            <p>Auf einer Seite sollte normalerweise nur ein <code>main</code> vorhanden sein.</p>
+
+            <h3>section — ein thematischer Abschnitt</h3>
+
+            <pre><code>&lt;section&gt;
+    &lt;h2&gt;Meine Touren&lt;/h2&gt;
+
+    &lt;p&gt;
+        Hier findest du eine Übersicht meiner Touren.
+    &lt;/p&gt;
+&lt;/section&gt;</code></pre>
+
+            <h3>article — eigenständiger Inhalt</h3>
+
+            <pre><code>&lt;article&gt;
+    &lt;h2&gt;Wildspitze&lt;/h2&gt;
+    &lt;p&gt;Informationen zur Tour.&lt;/p&gt;
+&lt;/article&gt;</code></pre>
+
+            <p>Zum Beispiel für einzelne Touren, Blogbeiträge oder Berichte.</p>
+
+            <h3>footer — Fußbereich</h3>
+
+            <pre><code>&lt;footer&gt;
+    &lt;p&gt;© 2026 Mein Bergprojekt&lt;/p&gt;
+&lt;/footer&gt;</code></pre>
+
+        </section>
+
+        <section id="tabellen">
+
+            <h2>Tabellen</h2>
+
+            <p>Eine einfache Tabelle:</p>
+
+            <pre><code>&lt;table&gt;
+
+    &lt;tr&gt;
+        &lt;th&gt;Tour&lt;/th&gt;
+        &lt;th&gt;Höhe&lt;/th&gt;
+        &lt;th&gt;Land&lt;/th&gt;
+    &lt;/tr&gt;
+
+    &lt;tr&gt;
+        &lt;td&gt;Wildspitze&lt;/td&gt;
+        &lt;td&gt;3770 m&lt;/td&gt;
+        &lt;td&gt;Österreich&lt;/td&gt;
+    &lt;/tr&gt;
+
+    &lt;tr&gt;
+        &lt;td&gt;Ortler&lt;/td&gt;
+        &lt;td&gt;3905 m&lt;/td&gt;
+        &lt;td&gt;Italien&lt;/td&gt;
+    &lt;/tr&gt;
+
+&lt;/table&gt;</code></pre>
+
+            <p>
+                <code>table</code> = gesamte Tabelle,
+                <code>tr</code> = Tabellenzeile,
+                <code>th</code> = Überschrift einer Spalte,
+                <code>td</code> = normale Tabellenzelle.
+            </p>
+
+        </section>
+
+        <section id="buttons">
+
+            <h2>Buttons</h2>
+
+            <p>Ein einfacher Button:</p>
+
+            <pre><code>&lt;button&gt;Klick mich&lt;/button&gt;</code></pre>
+
+            <p>
+                Wichtig: Ein <code>&lt;button&gt;</code> führt allein noch keine
+                Aktion aus. Wenn später JavaScript verwendet wird, kann ein Button
+                Aktionen auslösen.
+            </p>
+
+            <h3>Links statt Buttons für Navigation</h3>
+
+            <p>
+                Wenn etwas beim Anklicken nur eine andere Seite öffnen soll, ist
+                grundsätzlich ein Link die richtige Wahl:
+            </p>
+
+            <pre><code>&lt;a href="touren.html"&gt;Zu den Touren&lt;/a&gt;</code></pre>
+
+            <p>
+                Nicht <code>&lt;button&gt;Touren ansehen&lt;/button&gt;</code>,
+                wenn der Button eigentlich nur zu einer anderen Seite führen soll.
+            </p>
+
+        </section>
+
+        <section id="attribute">
+
+            <h2>Attribute, id &amp; class</h2>
+
+            <p>HTML-Elemente können zusätzliche Informationen bekommen. Beispiel:</p>
+
+            <pre><code>&lt;a href="touren.html"&gt;Touren&lt;/a&gt;</code></pre>
+
+            <p>
+                <code>href</code> ist hier ein Attribut. Ein Attribut steht
+                normalerweise innerhalb des öffnenden Tags:
+            </p>
+
+            <pre><code>&lt;tag attribut="wert"&gt;</code></pre>
+
+            <h3>id</h3>
+
+            <p>Ein Element kann eine eindeutige ID bekommen:</p>
+
+            <pre><code>&lt;h2 id="touren"&gt;Meine Touren&lt;/h2&gt;</code></pre>
+
+            <p>Danach kann man direkt zu dieser Stelle springen:</p>
+
+            <pre><code>&lt;a href="#touren"&gt;Zu den Touren springen&lt;/a&gt;</code></pre>
+
+            <p>
+                Das <code>#</code> bedeutet: suche das Element mit dieser ID.
+            </p>
+
+            <h3>class</h3>
+
+            <p>Mit <code>class</code> kann man Elemente einer Gruppe zuordnen:</p>
+
+            <pre><code>&lt;div class="tour"&gt;
+    &lt;h2&gt;Wildspitze&lt;/h2&gt;
+&lt;/div&gt;
+
+&lt;div class="tour"&gt;
+    &lt;h2&gt;Ortler&lt;/h2&gt;
+&lt;/div&gt;</code></pre>
+
+            <p><code>class</code> wird später besonders wichtig für CSS.</p>
+
+        </section>
+
+        <section id="kommentare">
+
+            <h2>Kommentare</h2>
+
+            <p>Kommentare werden vom Browser nicht angezeigt:</p>
+
+            <pre><code>&lt;!-- Das ist ein Kommentar --&gt;</code></pre>
+
+            <p>Beispiel:</p>
+
+            <pre><code>&lt;!-- Navigation --&gt;
+&lt;nav&gt;
+    ...
+&lt;/nav&gt;</code></pre>
+
+            <p>Kommentare können helfen, den Code zu organisieren.</p>
+
+        </section>
+
+        <section id="beispiel">
+
+            <h2>Vollständiges Beispiel</h2>
+
+            <p>
+                Eine saubere, einfache Website kann beispielsweise so aufgebaut
+                werden:
+            </p>
+
+            <pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang="de"&gt;
+
+&lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;title&gt;Meine Website&lt;/title&gt;
+&lt;/head&gt;
+
+&lt;body&gt;
+
+    &lt;header&gt;
+        &lt;h1&gt;Meine Website&lt;/h1&gt;
+        &lt;p&gt;Kurze Beschreibung meiner Website.&lt;/p&gt;
+    &lt;/header&gt;
+
+    &lt;nav&gt;
+        &lt;a href="index.html"&gt;Startseite&lt;/a&gt;
+        &lt;a href="touren.html"&gt;Touren&lt;/a&gt;
+        &lt;a href="ausruestung.html"&gt;Ausrüstung&lt;/a&gt;
+        &lt;a href="ueber-mich.html"&gt;Über mich&lt;/a&gt;
+    &lt;/nav&gt;
+
+    &lt;main&gt;
+
+        &lt;section&gt;
+            &lt;h2&gt;Willkommen&lt;/h2&gt;
+            &lt;p&gt;Hier steht mein Begrüßungstext.&lt;/p&gt;
+        &lt;/section&gt;
+
+        &lt;section&gt;
+            &lt;h2&gt;Über diese Website&lt;/h2&gt;
+            &lt;p&gt;Hier steht eine Beschreibung der Website.&lt;/p&gt;
+        &lt;/section&gt;
+
+        &lt;section&gt;
+            &lt;h2&gt;Meine Themen&lt;/h2&gt;
+            &lt;ul&gt;
+                &lt;li&gt;Touren&lt;/li&gt;
+                &lt;li&gt;Ausrüstung&lt;/li&gt;
+                &lt;li&gt;Erfahrungen&lt;/li&gt;
+            &lt;/ul&gt;
+        &lt;/section&gt;
+
+    &lt;/main&gt;
+
+    &lt;footer&gt;
+        &lt;p&gt;© 2026 Meine Website&lt;/p&gt;
+    &lt;/footer&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+
+            <p>
+                Grundprinzip eines Tags mit Attribut:
+            </p>
+
+            <pre><code>&lt;tag attribut="wert"&gt;Inhalt&lt;/tag&gt;</code></pre>
+
+            <p>Am Beispiel <code>&lt;a href="touren.html"&gt;Touren&lt;/a&gt;</code>:</p>
+
+            <pre><code>&lt;a&gt;             = HTML-Element
+href             = Attribut
+"touren.html"    = Wert des Attributs
+Touren           = sichtbarer Text
+&lt;/a&gt;            = Ende des Elements</code></pre>
+
+        </section>
+
+        <section id="mehrseitig">
+
+            <h2>Mehrseitige Website</h2>
+
+            <p>
+                Jede eigenständige Seite braucht ihre eigene HTML-Datei. Für eine
+                kleine Website kann die Struktur beispielsweise so aussehen:
+            </p>
+
+            <pre><code>meine-website/
+│
+├── index.html
+│
+├── touren.html
+├── ausruestung.html
+├── ueber-mich.html
+│
+└── bilder/
+    ├── berg.jpg
+    ├── tour.jpg
+    └── rucksack.jpg</code></pre>
+
+            <p>
+                Die <code>index.html</code> ist normalerweise die Startseite. Die
+                Unterseiten werden über <code>&lt;a href="..."&gt;</code>
+                miteinander verbunden — die Startseite verlinkt zur Tourenseite:
+            </p>
+
+            <pre><code>&lt;a href="touren.html"&gt;Touren&lt;/a&gt;</code></pre>
+
+            <p>und die Tourenseite kann wieder zurückverlinken:</p>
+
+            <pre><code>&lt;a href="index.html"&gt;Zurück zur Startseite&lt;/a&gt;</code></pre>
+
+        </section>
+
+        <section id="sauberer-code">
+
+            <h2>Einrückung &amp; Verschachtelung</h2>
+
+            <h3>Saubere Einrückung</h3>
+
+            <p>HTML sollte übersichtlich eingerückt werden. Schlecht:</p>
+
+            <pre><code>&lt;body&gt;&lt;header&gt;&lt;h1&gt;Meine Website&lt;/h1&gt;&lt;/header&gt;&lt;main&gt;&lt;p&gt;Hallo&lt;/p&gt;&lt;/main&gt;&lt;/body&gt;</code></pre>
+
+            <p>Besser:</p>
+
+            <pre><code>&lt;body&gt;
+
+    &lt;header&gt;
+        &lt;h1&gt;Meine Website&lt;/h1&gt;
+    &lt;/header&gt;
+
+    &lt;main&gt;
+        &lt;p&gt;Hallo&lt;/p&gt;
+    &lt;/main&gt;
+
+&lt;/body&gt;</code></pre>
+
+            <p>
+                Dadurch sieht man sofort, welches Element in welchem anderen
+                Element steckt.
+            </p>
+
+            <h3>Verschachtelung</h3>
+
+            <p>HTML-Elemente können ineinander liegen:</p>
+
+            <pre><code>&lt;section&gt;
+
+    &lt;h2&gt;Meine Tour&lt;/h2&gt;
+
+    &lt;p&gt;
+        Das war eine
+        &lt;strong&gt;sehr schöne&lt;/strong&gt;
+        Tour.
+    &lt;/p&gt;
+
+&lt;/section&gt;</code></pre>
+
+            <p>Das Prinzip:</p>
+
+            <pre><code>section
+├── h2
+└── p
+    └── strong</code></pre>
+
+            <p>Tags sollten korrekt geschlossen werden. Richtig:</p>
+
+            <pre><code>&lt;p&gt;
+    Das ist &lt;strong&gt;wichtiger Text&lt;/strong&gt;.
+&lt;/p&gt;</code></pre>
+
+            <p>Falsch:</p>
+
+            <pre><code>&lt;p&gt;
+    Das ist &lt;strong&gt;wichtiger Text.
+&lt;/p&gt;
+&lt;/strong&gt;</code></pre>
+
+        </section>
+
+        <section id="html-css-js">
+
+            <h2>HTML, CSS &amp; JavaScript</h2>
+
+            <p>HTML bestimmt hauptsächlich: <strong>Was ist etwas?</strong></p>
+
+            <pre><code>&lt;h1&gt;Hauptüberschrift&lt;/h1&gt;
+&lt;p&gt;Absatz&lt;/p&gt;
+&lt;nav&gt;Navigation&lt;/nav&gt;
+&lt;section&gt;Abschnitt&lt;/section&gt;
+&lt;img src="berg.jpg" alt="Berg"&gt;
+&lt;a href="touren.html"&gt;Link&lt;/a&gt;</code></pre>
+
+            <p>CSS bestimmt später: <strong>Wie sieht es aus?</strong></p>
+
+            <ul>
+                <li>Farbe</li>
+                <li>Größe</li>
+                <li>Abstand</li>
+                <li>Schriftart</li>
+                <li>Position</li>
+                <li>Hintergrund</li>
+                <li>Layout</li>
+            </ul>
+
+            <p>JavaScript bestimmt später: <strong>Was passiert?</strong></p>
+
+            <ul>
+                <li>Klickaktionen</li>
+                <li>Dynamische Inhalte</li>
+                <li>Menüs</li>
+                <li>Berechnungen</li>
+                <li>Interaktive Elemente</li>
+            </ul>
+
+        </section>
+
+        <section id="vorgehen">
+
+            <h2>Vorgehen beim Seitenaufbau</h2>
+
+            <p>
+                Beim Schreiben von HTML hilft es, sich vorher ein paar Fragen zu
+                stellen:
+            </p>
+
+            <h3>1. Was ist die Seite?</h3>
+
+            <pre><code>&lt;h1&gt;Meine Bergseite&lt;/h1&gt;</code></pre>
+
+            <h3>2. Welche Bereiche gibt es?</h3>
+
+            <pre><code>header
+nav
+main
+section
+footer</code></pre>
+
+            <h3>3. Welche Inhalte befinden sich darin?</h3>
+
+            <pre><code>h2
+p
+ul
+img
+a</code></pre>
+
+            <h3>4. Wohin sollen Links führen?</h3>
+
+            <pre><code>&lt;a href="touren.html"&gt;Touren&lt;/a&gt;</code></pre>
+
+            <h3>5. Wo liegen Bilder und andere Dateien?</h3>
+
+            <pre><code>&lt;img src="bilder/berg.jpg" alt="Berg"&gt;</code></pre>
+
+            <p>Erst danach sollte man sich um das Aussehen kümmern.</p>
+
+        </section>
+
+        <section id="haeufige-fehler">
+
+            <h2>Häufige Fehler</h2>
+
+            <h3>Link ohne href</h3>
+
+            <p>Falsch: <code>&lt;a&gt;Touren&lt;/a&gt;</code></p>
+            <p>Richtig: <code>&lt;a href="touren.html"&gt;Touren&lt;/a&gt;</code></p>
+
+            <h3>Falscher Dateiname</h3>
+
+            <p>
+                Wenn die Datei <code>touren.html</code> heißt, muss der Link exakt
+                dazu passen. Nicht <code>Touren.html</code> oder
+                <code>tour.html</code>, wenn diese Dateien nicht existieren.
+            </p>
+
+            <h3>Falscher Ordner</h3>
+
+            <p>
+                Wenn das Bild unter <code>bilder/berg.jpg</code> liegt, muss der
+                Pfad exakt stimmen: <code>&lt;img src="bilder/berg.jpg" alt="Berg"&gt;</code>
+            </p>
+
+            <h3>Überschrift nicht geschlossen</h3>
+
+            <p>Falsch: <code>&lt;h1&gt;Meine Website</code></p>
+            <p>Richtig: <code>&lt;h1&gt;Meine Website&lt;/h1&gt;</code></p>
+
+        </section>
+
+        <section id="referenz">
+
+            <h2>Tags &amp; Attribute im Überblick</h2>
+
+            <h3>Wichtigste Tags</h3>
+
+            <table>
+                <tr><th>Tag</th><th>Bedeutung</th></tr>
+                <tr><td><code>html</code></td><td>komplette HTML-Datei</td></tr>
+                <tr><td><code>head</code></td><td>Informationen über die Seite</td></tr>
+                <tr><td><code>title</code></td><td>Titel im Browser-Tab</td></tr>
+                <tr><td><code>body</code></td><td>sichtbarer Seiteninhalt</td></tr>
+                <tr><td><code>h1</code></td><td>wichtigste Überschrift</td></tr>
+                <tr><td><code>h2</code></td><td>zweite Überschriftenebene</td></tr>
+                <tr><td><code>h3</code></td><td>dritte Überschriftenebene</td></tr>
+                <tr><td><code>p</code></td><td>Absatz</td></tr>
+                <tr><td><code>br</code></td><td>Zeilenumbruch</td></tr>
+                <tr><td><code>strong</code></td><td>wichtiger/fetter Text</td></tr>
+                <tr><td><code>em</code></td><td>betonter Text</td></tr>
+                <tr><td><code>a</code></td><td>Link</td></tr>
+                <tr><td><code>img</code></td><td>Bild</td></tr>
+                <tr><td><code>ul</code></td><td>ungeordnete Liste</td></tr>
+                <tr><td><code>ol</code></td><td>geordnete Liste</td></tr>
+                <tr><td><code>li</code></td><td>Listeneintrag</td></tr>
+                <tr><td><code>table</code></td><td>Tabelle</td></tr>
+                <tr><td><code>tr</code></td><td>Tabellenzeile</td></tr>
+                <tr><td><code>th</code></td><td>Tabellenüberschrift</td></tr>
+                <tr><td><code>td</code></td><td>Tabellenzelle</td></tr>
+                <tr><td><code>button</code></td><td>Button</td></tr>
+                <tr><td><code>div</code></td><td>allgemeiner Container</td></tr>
+                <tr><td><code>header</code></td><td>Kopfbereich</td></tr>
+                <tr><td><code>nav</code></td><td>Navigation</td></tr>
+                <tr><td><code>main</code></td><td>Hauptinhalt</td></tr>
+                <tr><td><code>section</code></td><td>thematischer Abschnitt</td></tr>
+                <tr><td><code>article</code></td><td>eigenständiger Inhalt</td></tr>
+                <tr><td><code>footer</code></td><td>Fußbereich</td></tr>
+            </table>
+
+            <h3>Wichtigste Attribute</h3>
+
+            <table>
+                <tr><th>Attribut</th><th>Verwendung</th><th>Beispiel</th></tr>
+                <tr><td><code>href</code></td><td>Ziel eines Links</td><td><code>href="touren.html"</code></td></tr>
+                <tr><td><code>src</code></td><td>Quelle eines Bildes</td><td><code>src="berg.jpg"</code></td></tr>
+                <tr><td><code>alt</code></td><td>Bildbeschreibung</td><td><code>alt="Berg"</code></td></tr>
+                <tr><td><code>id</code></td><td>eindeutige ID</td><td><code>id="touren"</code></td></tr>
+                <tr><td><code>class</code></td><td>Gruppierung von Elementen</td><td><code>class="tour"</code></td></tr>
+                <tr><td><code>target</code></td><td>Ziel/Tab eines Links</td><td><code>target="_blank"</code></td></tr>
+                <tr><td><code>lang</code></td><td>Sprache</td><td><code>lang="de"</code></td></tr>
+            </table>
+
+        </section>
+
+    </div>
+
+    <div class="content-mode" data-mode="css" hidden>
+
+        <section id="css-was-ist-css">
+
+            <h2>Was ist CSS?</h2>
+
+            <p>CSS steht für <strong>Cascading Style Sheets</strong>.</p>
+
+            <p>
+                HTML bestimmt hauptsächlich: <strong>Was ist auf der Website?</strong><br>
+                CSS bestimmt: <strong>Wie sieht es aus?</strong>
+            </p>
+
+            <p>Beispiel HTML:</p>
+
+            <pre><code>&lt;h1&gt;Meine Website&lt;/h1&gt;</code></pre>
+
+            <p>
+                Ohne CSS zeigt der Browser die Überschrift einfach mit seinem
+                Standarddesign. Mit CSS kann man zum Beispiel bestimmen:
+            </p>
+
+            <ul>
+                <li>Schriftgröße &amp; Schriftart</li>
+                <li>Farbe</li>
+                <li>Abstand</li>
+                <li>Breite &amp; Höhe</li>
+                <li>Position</li>
+                <li>Hintergrund &amp; Rahmen</li>
+                <li>Ausrichtung</li>
+            </ul>
+
+            <h3>HTML und CSS sind zwei verschiedene Dinge</h3>
+
+            <p>HTML:</p>
+
+            <pre><code>&lt;h1 class="titel"&gt;Meine Website&lt;/h1&gt;</code></pre>
+
+            <p>CSS:</p>
+
+            <pre><code class="lang-css">.titel {
+    color: blue;
+    font-size: 40px;
+}</code></pre>
+
+            <p>
+                HTML sagt: <em>Das ist eine Überschrift.</em><br>
+                CSS sagt: <em>Diese Überschrift soll blau und 40 Pixel groß sein.</em>
+            </p>
+
+        </section>
+
+        <section id="css-einbinden">
+
+            <h2>CSS einbinden</h2>
+
+            <p>
+                Eine CSS-Datei sieht beispielsweise so aus: <code>style.css</code>.
+                HTML weiß nicht automatisch, dass diese Datei existiert — man
+                verbindet sie im <code>&lt;head&gt;</code> der HTML-Datei:
+            </p>
+
+            <pre><code>&lt;link rel="stylesheet" href="style.css"&gt;</code></pre>
+
+            <p>Zum Beispiel:</p>
+
+            <pre><code>&lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;title&gt;Meine Website&lt;/title&gt;
+    &lt;link rel="stylesheet" href="style.css"&gt;
+&lt;/head&gt;</code></pre>
+
+            <h3>Bedeutung</h3>
+
+            <p>
+                <code>&lt;link&gt;</code> stellt eine Verbindung zu einer anderen
+                Datei her. <code>rel="stylesheet"</code> sagt: Diese Datei ist ein
+                Stylesheet. <code>href="style.css"</code> sagt: Die CSS-Datei heißt
+                <code>style.css</code>.
+            </p>
+
+        </section>
+
+        <section id="css-syntax">
+
+            <h2>Grundlegende Syntax</h2>
+
+            <p>Das wichtigste Muster in CSS ist:</p>
+
+            <pre><code class="lang-css">selektor {
+    eigenschaft: wert;
+}</code></pre>
+
+            <p>Beispiel:</p>
+
+            <pre><code class="lang-css">h1 {
+    color: blue;
+}</code></pre>
+
+            <p>Das bedeutet: Alle <code>h1</code>-Elemente sollen die Eigenschaft
+            <code>color</code> mit dem Wert <code>blue</code> bekommen.</p>
+
+            <div class="anatomy">
+                <div class="anatomy-part anatomy-tag">
+                    <code>h1</code>
+                    <span class="anatomy-label">Selektor</span>
+                </div>
+                <div class="anatomy-part anatomy-content">
+                    <code>color</code>
+                    <span class="anatomy-label">Eigenschaft</span>
+                </div>
+                <div class="anatomy-part anatomy-content">
+                    <code>blue</code>
+                    <span class="anatomy-label">Wert</span>
+                </div>
+            </div>
+
+            <h3>Geschweifte Klammern &amp; Semikolon</h3>
+
+            <p>
+                CSS-Regeln stehen zwischen <code>{</code> und <code>}</code>.
+                Jede Eigenschaft endet normalerweise mit einem <code>;</code>:
+            </p>
+
+            <pre><code class="lang-css">h1 {
+    color: blue;
+    font-size: 40px;
+}</code></pre>
+
+            <p>Ein Element kann beliebig viele Eigenschaften bekommen:</p>
+
+            <pre><code class="lang-css">h1 {
+    color: blue;
+    font-size: 40px;
+    font-family: Arial;
+}</code></pre>
+
+            <h3>Kommentare</h3>
+
+            <p>CSS-Kommentare werden nicht ausgeführt:</p>
+
+            <pre><code class="lang-css">/* Überschriften */
+
+h1 {
+    color: blue;
+}</code></pre>
+
+        </section>
+
+        <section id="css-selektoren">
+
+            <h2>Elemente, Klassen &amp; IDs</h2>
+
+            <p>
+                Der <strong>Selektor</strong> bestimmt: <em>Welches HTML-Element
+                möchte ich verändern?</em>
+            </p>
+
+            <h3>Elemente direkt auswählen</h3>
+
+            <p>Man kann HTML-Tags direkt als Selektor verwenden:</p>
+
+            <pre><code class="lang-css">h1 {
+    color: blue;
+}
+
+p {
+    color: black;
+}
+
+body {
+    background-color: white;
+}</code></pre>
+
+            <p>Damit werden alle entsprechenden Elemente angesprochen.</p>
+
+            <h3>Klassen</h3>
+
+            <p>Klassen sind eine der wichtigsten Möglichkeiten, gezielt Elemente anzusprechen.</p>
+
+            <p>HTML:</p>
+
+            <pre><code>&lt;p class="wichtig"&gt;
+    Das ist wichtig.
+&lt;/p&gt;</code></pre>
+
+            <p>CSS:</p>
+
+            <pre><code class="lang-css">.wichtig {
+    color: red;
+}</code></pre>
+
+            <p>
+                Der Punkt <code>.</code> bedeutet: Ich möchte eine Klasse
+                auswählen. <code>.wichtig</code> spricht <code>class="wichtig"</code>
+                an.
+            </p>
+
+            <p>Mehrere Elemente können dieselbe Klasse haben:</p>
+
+            <pre><code>&lt;p class="tour"&gt;Wildspitze&lt;/p&gt;
+&lt;p class="tour"&gt;Ortler&lt;/p&gt;
+&lt;p class="tour"&gt;Mont Blanc&lt;/p&gt;</code></pre>
+
+            <pre><code class="lang-css">.tour {
+    color: blue;
+}</code></pre>
+
+            <p>Alle drei bekommen diese Regel — das ist der große Vorteil von Klassen.</p>
+
+            <h3>IDs</h3>
+
+            <p>HTML:</p>
+
+            <pre><code>&lt;h1 id="haupttitel"&gt;
+    Meine Website
+&lt;/h1&gt;</code></pre>
+
+            <p>CSS:</p>
+
+            <pre><code class="lang-css">#haupttitel {
+    color: blue;
+}</code></pre>
+
+            <p>
+                Das <code>#</code> bedeutet: Wähle die ID aus. <code>#haupttitel</code>
+                spricht <code>id="haupttitel"</code> an.
+            </p>
+
+            <h3>Klasse oder ID?</h3>
+
+            <p>
+                Für CSS sollte meistens <code>class</code> verwendet werden. Eine
+                ID ist normalerweise für ein bestimmtes, eindeutiges Element gedacht.
+            </p>
+
+            <pre><code>.klasse   → kann oft mehrfach vorkommen
+#id       → soll eindeutig sein</code></pre>
+
+        </section>
+
+        <section id="css-selektoren-kombi">
+
+            <h2>Mehrere &amp; verschachtelte Selektoren</h2>
+
+            <h3>Mehrere Selektoren gleichzeitig</h3>
+
+            <p>Man kann mehrere Elemente mit derselben Regel ansprechen:</p>
+
+            <pre><code class="lang-css">h1, h2, h3 {
+    color: blue;
+}</code></pre>
+
+            <p>Das bedeutet: Wende diese Regel auf <code>h1</code>, <code>h2</code> und <code>h3</code> an.</p>
+
+            <h3>Verschachtelte Elemente auswählen</h3>
+
+            <p>Man kann auch sagen: Wähle nur <code>p</code> innerhalb von <code>section</code>.</p>
+
+            <pre><code class="lang-css">section p {
+    color: gray;
+}</code></pre>
+
+            <p>HTML:</p>
+
+            <pre><code>&lt;section&gt;
+    &lt;h2&gt;Touren&lt;/h2&gt;
+    &lt;p&gt;Dieser Text wird grau.&lt;/p&gt;
+&lt;/section&gt;
+
+&lt;p&gt;Dieser Text wird nicht automatisch grau.&lt;/p&gt;</code></pre>
+
+            <h3>Universal-Selektor</h3>
+
+            <p><code>*</code> bedeutet: Wähle alle Elemente aus. Sehr häufig:</p>
+
+            <pre><code class="lang-css">* {
+    box-sizing: border-box;
+}</code></pre>
+
+        </section>
+
+        <section id="css-kaskade">
+
+            <h2>Kaskade &amp; Spezifität</h2>
+
+            <p>Das „C" in CSS bedeutet <strong>Cascading</strong>.</p>
+
+            <p>Es kann vorkommen, dass mehrere Regeln dasselbe Element beeinflussen:</p>
+
+            <pre><code class="lang-css">p {
+    color: blue;
+}
+
+p {
+    color: red;
+}</code></pre>
+
+            <p>
+                Hier gilt aufgrund der Reihenfolge in diesem einfachen Fall die
+                spätere Regel: <code>color: red;</code>
+            </p>
+
+            <p>Wichtige Faktoren dafür, welche Regel gewinnt:</p>
+
+            <ul>
+                <li><code>!important</code></li>
+                <li>Spezifität</li>
+                <li>Reihenfolge</li>
+                <li>Vererbung</li>
+            </ul>
+
+            <p>
+                Für den Anfang reicht: Wenn mehrere gleich starke Regeln dasselbe
+                festlegen, gewinnt normalerweise die spätere.
+            </p>
+
+            <h3>Spezifität — einfach erklärt</h3>
+
+            <p>CSS kann unterschiedlich gezielt auswählen:</p>
+
+            <pre><code class="lang-css">p {
+    color: blue;
+}</code></pre>
+            <p>weniger spezifisch als eine Klasse:</p>
+
+            <pre><code class="lang-css">.text {
+    color: red;
+}</code></pre>
+            <p>und eine Klasse ist weniger spezifisch als eine ID:</p>
+
+            <pre><code class="lang-css">#haupttext {
+    color: green;
+}</code></pre>
+
+            <p>Vereinfacht:</p>
+
+            <pre><code>Element → Klasse → ID</code></pre>
+
+            <p>Je spezifischer der Selektor, desto stärker ist die Regel normalerweise.</p>
+
+        </section>
+
+        <section id="css-eigenschaft-wert">
+
+            <h2>Eigenschaft &amp; Wert</h2>
+
+            <p>Die <strong>Eigenschaft</strong> bestimmt: <em>Was möchte ich verändern?</em></p>
+
+            <pre><code class="lang-css">p {
+    color: red;
+}</code></pre>
+
+            <p>Hier ist <code>color</code> die Eigenschaft — sie verändert die Textfarbe. Weitere Eigenschaften:</p>
+
+            <pre><code>font-size
+background-color
+width
+height
+margin
+padding
+border</code></pre>
+
+            <p>Der <strong>Wert</strong> sagt: <em>Wie soll diese Eigenschaft eingestellt werden?</em></p>
+
+            <pre><code class="lang-css">font-size: 30px;</code></pre>
+
+            <div class="anatomy">
+                <div class="anatomy-part anatomy-content">
+                    <code>font-size</code>
+                    <span class="anatomy-label">Eigenschaft</span>
+                </div>
+                <div class="anatomy-part anatomy-content">
+                    <code>30px</code>
+                    <span class="anatomy-label">Wert</span>
+                </div>
+            </div>
+
+        </section>
+
+        <section id="css-farben">
+
+            <h2>Farben</h2>
+
+            <p>Eine der einfachsten CSS-Eigenschaften ist <code>color</code>:</p>
+
+            <pre><code class="lang-css">p {
+    color: red;
+}</code></pre>
+
+            <p>Die Hintergrundfarbe:</p>
+
+            <pre><code class="lang-css">body {
+    background-color: lightgray;
+}</code></pre>
+
+            <h3>Farben als Namen</h3>
+
+            <p>CSS kennt viele Farbnamen:</p>
+
+            <pre><code class="lang-css">color: red;
+color: blue;
+color: green;
+color: black;
+color: white;
+color: gray;</code></pre>
+
+            <h3>Hex-Farben</h3>
+
+            <p>Farben können auch als Hex-Code angegeben werden, im Format <code>#RRGGBB</code>:</p>
+
+            <pre><code class="lang-css">color: #000000;  /* Schwarz */
+color: #ffffff;  /* Weiß */
+color: #ff0000;  /* Rot */
+color: #0000ff;  /* Blau */</code></pre>
+
+            <h3>RGB</h3>
+
+            <p>Farben können auch mit RGB angegeben werden:</p>
+
+            <pre><code class="lang-css">color: rgb(255, 0, 0);</code></pre>
+
+            <pre><code>Rot:   255
+Grün:    0
+Blau:    0</code></pre>
+
+        </section>
+
+        <section id="css-text">
+
+            <h2>Text &amp; Schrift</h2>
+
+            <h3>Schriftgröße</h3>
+
+            <pre><code class="lang-css">p {
+    font-size: 18px;
+}</code></pre>
+
+            <h3>Schriftart</h3>
+
+            <pre><code class="lang-css">body {
+    font-family: Arial, sans-serif;
+}</code></pre>
+
+            <p>
+                Mehrere Schriftarten können angegeben werden. Der Browser
+                versucht die erste — wenn sie nicht verfügbar ist, die nächste:
+            </p>
+
+            <pre><code class="lang-css">font-family: Arial, Helvetica, sans-serif;</code></pre>
+
+            <h3>Schriftgewicht</h3>
+
+            <pre><code class="lang-css">h1 {
+    font-weight: bold;
+}</code></pre>
+
+            <p>Oder numerisch — <code>400</code> = normal, <code>700</code> = fett:</p>
+
+            <pre><code class="lang-css">font-weight: 700;</code></pre>
+
+            <h3>Textausrichtung</h3>
+
+            <pre><code class="lang-css">h1 {
+    text-align: center;
+}</code></pre>
+
+            <pre><code>text-align: left;
+text-align: right;
+text-align: center;</code></pre>
+
+            <h3>Unterstreichung &amp; Textdekoration</h3>
+
+            <p>Sehr häufig bei Links, um die Standard-Unterstreichung zu entfernen:</p>
+
+            <pre><code class="lang-css">a {
+    text-decoration: none;
+}</code></pre>
+
+        </section>
+
+        <section id="css-einheiten">
+
+            <h2>Maßeinheiten</h2>
+
+            <h3>px — Pixel</h3>
+
+            <p>Feste Pixelgröße. Für den Anfang sehr einfach und gut verständlich:</p>
+
+            <pre><code class="lang-css">font-size: 20px;
+width: 300px;</code></pre>
+
+            <h3>% — Prozent</h3>
+
+            <p>Bezieht sich häufig auf die Größe des übergeordneten Elements:</p>
+
+            <pre><code class="lang-css">width: 50%;</code></pre>
+
+            <p>bedeutet ungefähr: Nimm 50 % der verfügbaren Breite.</p>
+
+            <h3>rem &amp; em</h3>
+
+            <p><code>rem</code> bezieht sich auf die Schriftgröße des HTML-Dokuments:</p>
+
+            <pre><code class="lang-css">font-size: 2rem;</code></pre>
+
+            <p><code>em</code> bezieht sich auf die Schriftgröße des jeweiligen Elements bzw. Kontextes:</p>
+
+            <pre><code class="lang-css">padding: 1em;</code></pre>
+
+            <h3>vh &amp; vw</h3>
+
+            <p><code>vh</code> = Viewport Height, <code>vw</code> = Viewport Width:</p>
+
+            <pre><code class="lang-css">height: 100vh;
+width: 100vw;</code></pre>
+
+            <p>100 % der sichtbaren Höhe bzw. Breite.</p>
+
+            <table>
+                <tr><th>Einheit</th><th>Bedeutung</th></tr>
+                <tr><td><code>px</code></td><td>feste Pixelgröße</td></tr>
+                <tr><td><code>%</code></td><td>prozentual zum Elternelement</td></tr>
+                <tr><td><code>rem</code></td><td>relativ zur Schriftgröße des Dokuments</td></tr>
+                <tr><td><code>em</code></td><td>relativ zur Schriftgröße des Kontexts</td></tr>
+                <tr><td><code>vh</code></td><td>Prozent der sichtbaren Höhe</td></tr>
+                <tr><td><code>vw</code></td><td>Prozent der sichtbaren Breite</td></tr>
+            </table>
+
+        </section>
+
+        <section id="css-box-model">
+
+            <h2>Das Box-Modell</h2>
+
+            <p>
+                Das ist eine der wichtigsten Grundlagen von CSS. Jedes Element
+                kann man vereinfacht wie eine Box betrachten:
+            </p>
+
+            <div class="box-model">
+                <div class="box-model-layer box-model-margin">
+                    <span class="box-model-label">margin</span>
+                    <div class="box-model-layer box-model-border">
+                        <span class="box-model-label">border</span>
+                        <div class="box-model-layer box-model-padding">
+                            <span class="box-model-label">padding</span>
+                            <div class="box-model-layer box-model-content">content</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <p>Von innen nach außen: Content → Padding → Border → Margin.</p>
+
+            <h3>Content</h3>
+
+            <p>Der eigentliche Inhalt — bei <code>&lt;p&gt;Hallo Welt&lt;/p&gt;</code> ist das der Text.</p>
+
+            <h3>Padding</h3>
+
+            <p><code>padding</code> ist der Abstand <strong>innerhalb</strong> einer Box — zwischen Inhalt und Rand:</p>
+
+            <pre><code class="lang-css">.box {
+    border: 1px solid black;
+    padding: 20px;
+}</code></pre>
+
+            <h3>Margin</h3>
+
+            <p><code>margin</code> ist der Abstand <strong>außerhalb</strong> einer Box — zu anderen Elementen:</p>
+
+            <pre><code class="lang-css">.box {
+    margin: 20px;
+}</code></pre>
+
+            <h3>Nicht verwechseln</h3>
+
+            <p>
+                <strong>Padding = Luft nach innen.</strong><br>
+                <strong>Margin = Luft nach außen.</strong>
+            </p>
+
+        </section>
+
+        <section id="css-groesse">
+
+            <h2>Breite, Höhe &amp; box-sizing</h2>
+
+            <pre><code class="lang-css">.box {
+    width: 300px;
+    height: 200px;
+}</code></pre>
+
+            <h3>box-sizing</h3>
+
+            <p>Eine sehr nützliche Regel:</p>
+
+            <pre><code class="lang-css">* {
+    box-sizing: border-box;
+}</code></pre>
+
+            <p>
+                Damit werden <code>padding</code> und <code>border</code> in die
+                angegebene Breite und Höhe einbezogen:
+            </p>
+
+            <pre><code class="lang-css">.box {
+    width: 300px;
+    padding: 20px;
+}</code></pre>
+
+            <p>Mit <code>border-box</code> bleibt die gesamte Box 300px breit.</p>
+
+            <h3>Maximale Breite</h3>
+
+            <p>Die Box darf höchstens 1000 Pixel breit werden. Sehr häufig für den Hauptinhalt:</p>
+
+            <pre><code class="lang-css">main {
+    max-width: 1000px;
+}</code></pre>
+
+        </section>
+
+        <section id="css-abstaende-detail">
+
+            <h2>Abstände im Detail</h2>
+
+            <h3>Jede Seite einzeln</h3>
+
+            <pre><code class="lang-css">margin-top: 10px;
+margin-right: 20px;
+margin-bottom: 30px;
+margin-left: 40px;</code></pre>
+
+            <p>Dasselbe bei Padding mit <code>padding-top</code>, <code>padding-right</code> usw.</p>
+
+            <h3>Kurzschreibweise für vier Seiten</h3>
+
+            <p>Statt vier Zeilen kann man schreiben:</p>
+
+            <pre><code class="lang-css">margin: 10px 20px 30px 40px;</code></pre>
+
+            <p>Die Reihenfolge ist im Uhrzeigersinn:</p>
+
+            <pre><code>        oben
+         ↓
+margin: 10px 20px 30px 40px;
+              ↑      ↑      ↑
+            rechts  unten  links</code></pre>
+
+            <h3>Gleicher Wert für alle Seiten</h3>
+
+            <pre><code class="lang-css">margin: 20px;</code></pre>
+
+            <h3>Zwei Werte</h3>
+
+            <p>Oben/unten 10px, rechts/links 20px:</p>
+
+            <pre><code class="lang-css">margin: 10px 20px;</code></pre>
+
+        </section>
+
+        <section id="css-hintergrund-rahmen">
+
+            <h2>Hintergrund &amp; Rahmen</h2>
+
+            <h3>Hintergrund</h3>
+
+            <pre><code class="lang-css">body {
+    background-color: lightblue;
+}</code></pre>
+
+            <p>Hintergrundbild:</p>
+
+            <pre><code class="lang-css">body {
+    background-image: url("bilder/berg.jpg");
+}</code></pre>
+
+            <h3>Rahmen</h3>
+
+            <pre><code class="lang-css">.box {
+    border: 2px solid black;
+}</code></pre>
+
+            <div class="anatomy">
+                <div class="anatomy-part anatomy-content">
+                    <code>2px</code>
+                    <span class="anatomy-label">Dicke</span>
+                </div>
+                <div class="anatomy-part anatomy-content">
+                    <code>solid</code>
+                    <span class="anatomy-label">Art</span>
+                </div>
+                <div class="anatomy-part anatomy-content">
+                    <code>black</code>
+                    <span class="anatomy-label">Farbe</span>
+                </div>
+            </div>
+
+            <p>Andere Rahmenarten: <code>solid</code>, <code>dashed</code>, <code>dotted</code>.</p>
+
+            <h3>Abgerundete Ecken</h3>
+
+            <p>Je größer der Wert, desto stärker abgerundet:</p>
+
+            <pre><code class="lang-css">.card {
+    border-radius: 10px;
+}</code></pre>
+
+            <h3>Schatten</h3>
+
+            <pre><code class="lang-css">.card {
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}</code></pre>
+
+            <h3>Transparenz</h3>
+
+            <p><code>0</code> = komplett unsichtbar, <code>1</code> = komplett sichtbar:</p>
+
+            <pre><code class="lang-css">.box {
+    opacity: 0.5;
+}</code></pre>
+
+        </section>
+
+        <section id="css-display">
+
+            <h2>display-Grundlagen</h2>
+
+            <p><code>display</code> bestimmt grundlegend, <strong>wie sich ein Element im Layout verhält</strong>. Sehr wichtige Werte:</p>
+
+            <pre><code class="lang-css">display: block;
+display: inline;
+display: flex;
+display: none;</code></pre>
+
+            <h3>block</h3>
+
+            <p>Ein Block-Element nimmt grundsätzlich eine eigene Zeile ein:</p>
+
+            <pre><code>&lt;div&gt;Box 1&lt;/div&gt;
+&lt;div&gt;Box 2&lt;/div&gt;</code></pre>
+
+            <pre><code>Box 1
+
+Box 2</code></pre>
+
+            <h3>inline</h3>
+
+            <p>Elemente können nebeneinander stehen:</p>
+
+            <pre><code>&lt;a href="#"&gt;Link 1&lt;/a&gt;
+&lt;a href="#"&gt;Link 2&lt;/a&gt;
+&lt;a href="#"&gt;Link 3&lt;/a&gt;</code></pre>
+
+            <pre><code>Link 1  Link 2  Link 3</code></pre>
+
+            <h3>none</h3>
+
+            <p>Das Element wird nicht angezeigt und nimmt keinen Platz ein:</p>
+
+            <pre><code class="lang-css">.geheim {
+    display: none;
+}</code></pre>
+
+        </section>
+
+        <section id="css-flexbox">
+
+            <h2>Flexbox-Grundlagen</h2>
+
+            <p>Flexbox ist eine der wichtigsten CSS-Techniken für Layouts.</p>
+
+            <p>HTML:</p>
+
+            <pre><code>&lt;div class="container"&gt;
+    &lt;div&gt;Box 1&lt;/div&gt;
+    &lt;div&gt;Box 2&lt;/div&gt;
+    &lt;div&gt;Box 3&lt;/div&gt;
+&lt;/div&gt;</code></pre>
+
+            <p>CSS:</p>
+
+            <pre><code class="lang-css">.container {
+    display: flex;
+}</code></pre>
+
+            <p>
+                Dann wird <code>.container</code> zum <strong>Flex-Container</strong>.
+                Die Elemente darin werden zu <strong>Flex-Items</strong>:
+            </p>
+
+            <pre><code>.container
+│
+├── Box 1
+├── Box 2
+└── Box 3</code></pre>
+
+            <h3>Standardrichtung</h3>
+
+            <p>Standardmäßig läuft Flexbox horizontal — die Boxen stehen nebeneinander:</p>
+
+            <pre><code>Box 1 | Box 2 | Box 3</code></pre>
+
+            <h3>flex-direction</h3>
+
+            <p>Man kann die Richtung ändern:</p>
+
+            <pre><code class="lang-css">.container {
+    display: flex;
+    flex-direction: column;
+}</code></pre>
+
+            <pre><code>Box 1
+Box 2
+Box 3</code></pre>
+
+            <p><code>flex-direction: row;</code> ist wieder horizontal (Standard).</p>
+
+        </section>
+
+        <section id="css-flex-ausrichten">
+
+            <h2>Flex-Items ausrichten</h2>
+
+            <h3>justify-content</h3>
+
+            <p>Bestimmt die Anordnung auf der Hauptachse:</p>
+
+            <pre><code class="lang-css">.container {
+    display: flex;
+    justify-content: space-between;
+}</code></pre>
+
+            <p>Wichtige Werte:</p>
+
+            <pre><code>flex-start
+center
+flex-end
+space-between
+space-around
+space-evenly</code></pre>
+
+            <h3>align-items</h3>
+
+            <p>Bestimmt die Ausrichtung auf der anderen Achse:</p>
+
+            <pre><code class="lang-css">.container {
+    display: flex;
+    align-items: center;
+}</code></pre>
+
+            <p>Wichtige Werte:</p>
+
+            <pre><code>flex-start
+center
+flex-end
+stretch</code></pre>
+
+            <h3>gap</h3>
+
+            <p>Abstand zwischen Flex-Items — oft einfacher als viele einzelne <code>margin</code>-Regeln:</p>
+
+            <pre><code class="lang-css">.container {
+    display: flex;
+    gap: 20px;
+}</code></pre>
+
+            <pre><code>Box 1    Box 2    Box 3
+      ↑        ↑
+     20px     20px</code></pre>
+
+            <h3>flex-wrap</h3>
+
+            <p>
+                Normalerweise versucht Flexbox, alles in einer Reihe
+                unterzubringen. Mit <code>wrap</code> dürfen Elemente in die
+                nächste Zeile springen — wichtig für responsive Layouts:
+            </p>
+
+            <pre><code class="lang-css">.container {
+    display: flex;
+    flex-wrap: wrap;
+}</code></pre>
+
+        </section>
+
+        <section id="css-zentrieren">
+
+            <h2>Zentrieren</h2>
+
+            <h3>Mit Flexbox</h3>
+
+            <p>Eine sehr häufige Kombination, um Elemente horizontal und vertikal zu zentrieren:</p>
+
+            <pre><code class="lang-css">.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}</code></pre>
+
+            <p>Abhängig von der Flex-Richtung und der Größe des Containers.</p>
+
+            <h3>Mit margin: auto</h3>
+
+            <p>Eine Box kann horizontal zentriert werden — <code>auto</code> verteilt den verfügbaren Platz automatisch:</p>
+
+            <pre><code class="lang-css">main {
+    max-width: 1000px;
+    margin: 0 auto;
+}</code></pre>
+
+        </section>
+
+        <section id="css-position">
+
+            <h2>position</h2>
+
+            <p>CSS kann Elemente auch positionieren. Wichtige Werte:</p>
+
+            <pre><code class="lang-css">position: static;
+position: relative;
+position: absolute;
+position: fixed;
+position: sticky;</code></pre>
+
+            <h3>relative</h3>
+
+            <p>Die Box wird zum Bezugspunkt für absolut positionierte Elemente innerhalb davon:</p>
+
+            <pre><code class="lang-css">.box {
+    position: relative;
+}</code></pre>
+
+            <h3>absolute</h3>
+
+            <p>Das Element wird aus dem normalen Layoutfluss genommen und anhand seines Positionierungs-Kontexts platziert:</p>
+
+            <pre><code class="lang-css">.box {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+}</code></pre>
+
+            <h3>fixed</h3>
+
+            <p>Das Element bleibt beim Scrollen an einer bestimmten Stelle des Browserfensters:</p>
+
+            <pre><code class="lang-css">.button {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+}</code></pre>
+
+            <h3>sticky</h3>
+
+            <p>Ein Element kann beim Scrollen an einer Position „kleben":</p>
+
+            <pre><code class="lang-css">nav {
+    position: sticky;
+    top: 0;
+}</code></pre>
+
+            <h3>top, right, bottom, left</h3>
+
+            <p>Diese Eigenschaften werden häufig mit <code>position</code> verwendet:</p>
+
+            <pre><code class="lang-css">.box {
+    position: absolute;
+    top: 20px;
+    left: 30px;
+}</code></pre>
+
+        </section>
+
+        <section id="css-hover">
+
+            <h2>Hover &amp; Pseudoklassen</h2>
+
+            <h3>Mauszeiger</h3>
+
+            <p>Beim Darüberfahren wird der typische Hand-Cursor angezeigt:</p>
+
+            <pre><code class="lang-css">button {
+    cursor: pointer;
+}</code></pre>
+
+            <h3>:hover</h3>
+
+            <p>Bestimmt, was beim Darüberfahren mit der Maus passiert — wenn die Maus über einem Link ist, wird er rot:</p>
+
+            <pre><code class="lang-css">a:hover {
+    color: red;
+}
+
+button:hover {
+    background-color: gray;
+}</code></pre>
+
+            <h3>Pseudoklassen</h3>
+
+            <p><code>:hover</code> ist eine sogenannte Pseudoklasse. Weitere Beispiele:</p>
+
+            <pre><code>:hover
+:focus
+:active
+:first-child
+:last-child</code></pre>
+
+            <p>Für den Anfang ist besonders <code>:hover</code> wichtig.</p>
+
+        </section>
+
+        <section id="css-vererbung">
+
+            <h2>Vererbung</h2>
+
+            <p>
+                Bestimmte CSS-Eigenschaften werden von einem übergeordneten Element
+                an seine Kinder weitergegeben:
+            </p>
+
+            <pre><code class="lang-css">body {
+    font-family: Arial;
+    color: #333333;
+}</code></pre>
+
+            <pre><code>&lt;body&gt;
+    &lt;h1&gt;Überschrift&lt;/h1&gt;
+    &lt;p&gt;Text&lt;/p&gt;
+&lt;/body&gt;</code></pre>
+
+            <p>
+                Viele Elemente innerhalb des <code>body</code> übernehmen diese
+                Eigenschaften automatisch. Dadurch muss nicht für jedes Element
+                eine eigene Schriftregel geschrieben werden.
+            </p>
+
+        </section>
+
+        <section id="css-media-queries">
+
+            <h2>Media Queries</h2>
+
+            <p>
+                Eine Website sollte auf verschiedenen Bildschirmgrößen
+                funktionieren: Desktop, Tablet, Handy. Dafür gibt es Media Queries.
+            </p>
+
+            <pre><code class="lang-css">@media (max-width: 600px) {
+
+    h1 {
+        font-size: 30px;
+    }
+
+}</code></pre>
+
+            <p>
+                Das bedeutet: Wenn der Bildschirm höchstens 600 Pixel breit ist,
+                soll <code>h1</code> 30px groß sein.
+            </p>
+
+            <h3>Typisches Beispiel</h3>
+
+            <pre><code class="lang-css">.container {
+    display: flex;
+    gap: 20px;
+}
+
+@media (max-width: 600px) {
+
+    .container {
+        flex-direction: column;
+    }
+
+}</code></pre>
+
+            <p>Auf großen Bildschirmen:</p>
+
+            <pre><code>Box 1 | Box 2 | Box 3</code></pre>
+
+            <p>Auf kleinen Bildschirmen:</p>
+
+            <pre><code>Box 1
+Box 2
+Box 3</code></pre>
+
+        </section>
+
+        <section id="css-struktur">
+
+            <h2>CSS-Dateien strukturieren</h2>
+
+            <h3>Einfacher Reset</h3>
+
+            <p>
+                Browser geben HTML-Elementen standardmäßig eigene Abstände. Man
+                kann diese teilweise zurücksetzen:
+            </p>
+
+            <pre><code class="lang-css">* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+}</code></pre>
+
+            <h3>Aufbau einer style.css</h3>
+
+            <pre><code class="lang-css">/* Grundlegende Einstellungen */
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+}
+
+
+/* Überschriften */
+
+h1 {
+    font-size: 40px;
+}
+
+h2 {
+    font-size: 30px;
+}
+
+
+/* Navigation */
+
+nav {
+    display: flex;
+    gap: 20px;
+}
+
+
+/* Hauptinhalt */
+
+main {
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+
+/* Karten */
+
+.card {
+    padding: 20px;
+    border: 1px solid #cccccc;
+    border-radius: 10px;
+}
+
+
+/* Mobile */
+
+@media (max-width: 600px) {
+
+    nav {
+        flex-direction: column;
+    }
+
+}</code></pre>
+
+        </section>
+
+        <section id="css-beispiel">
+
+            <h2>Vollständiges Beispiel</h2>
+
+            <h3>HTML</h3>
+
+            <pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang="de"&gt;
+
+&lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;title&gt;Meine Website&lt;/title&gt;
+    &lt;link rel="stylesheet" href="style.css"&gt;
+&lt;/head&gt;
+
+&lt;body&gt;
+
+    &lt;header class="header"&gt;
+        &lt;h1&gt;Meine Bergseite&lt;/h1&gt;
+        &lt;p&gt;Touren, Berge und Ausrüstung&lt;/p&gt;
+    &lt;/header&gt;
+
+    &lt;main class="main"&gt;
+
+        &lt;section class="karte"&gt;
+            &lt;h2&gt;Meine Touren&lt;/h2&gt;
+            &lt;p&gt;Hier findest du meine bisherigen Touren.&lt;/p&gt;
+            &lt;a href="touren.html"&gt;Touren ansehen&lt;/a&gt;
+        &lt;/section&gt;
+
+    &lt;/main&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+
+            <h3>CSS</h3>
+
+            <pre><code class="lang-css">* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+}
+
+.header {
+    padding: 40px;
+    text-align: center;
+    background-color: #eeeeee;
+}
+
+.main {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 40px 20px;
+}
+
+.karte {
+    padding: 20px;
+    border: 1px solid #cccccc;
+    border-radius: 10px;
+}
+
+.karte a {
+    color: blue;
+}</code></pre>
+
+            <h3>Was passiert hier?</h3>
+
+            <p>
+                <code>&lt;section class="karte"&gt;</code> gibt dem Element die
+                Klasse <code>karte</code>. <code>.karte {</code> im CSS sagt: Suche
+                alle Elemente mit der Klasse <code>karte</code>. Dann:
+            </p>
+
+            <ul>
+                <li><code>padding: 20px;</code> — gibt innen 20px Abstand</li>
+                <li><code>border: 1px solid #cccccc;</code> — gibt einen 1px dicken Rand</li>
+                <li><code>border-radius: 10px;</code> — macht die Ecken rund</li>
+            </ul>
+
+        </section>
+
+        <section id="css-denkweise">
+
+            <h2>Denkweise bei CSS</h2>
+
+            <p>Wenn etwas verändert werden soll, immer in dieser Reihenfolge denken:</p>
+
+            <ol>
+                <li><strong>Was</strong> möchte ich verändern? — <em>Die Überschrift.</em></li>
+                <li><strong>Welches</strong> Element ist das? — <code>&lt;h1&gt;</code></li>
+                <li><strong>Wie</strong> wähle ich es aus? — <code>h1</code> oder <code>.titel</code></li>
+                <li><strong>Was</strong> genau soll sich ändern? — <em>Farbe</em></li>
+                <li><strong>Welche</strong> CSS-Eigenschaft ist das? — <code>color</code></li>
+                <li><strong>Welchen</strong> Wert soll sie bekommen? — <code>color: blue;</code></li>
+            </ol>
+
+            <h3>CSS in einem Satz</h3>
+
+            <pre><code>WÄHLE ETWAS AUS
+        ↓
+  .klasse / h1 / #id
+        ↓
+BESTIMME, WAS GEÄNDERT WIRD
+        ↓
+      color
+        ↓
+BESTIMME DEN WERT
+        ↓
+      blue</code></pre>
+
+            <p>Als Code:</p>
+
+            <pre><code class="lang-css">.klasse {
+    color: blue;
+}</code></pre>
+
+        </section>
+
+        <section id="css-referenz">
+
+            <h2>Eigenschaften &amp; Werte im Überblick</h2>
+
+            <h3>Wichtigste Eigenschaften</h3>
+
+            <table>
+                <tr><th>Bereich</th><th>Eigenschaften</th></tr>
+                <tr><td>Text</td><td><code>color</code>, <code>font-family</code>, <code>font-size</code>, <code>font-weight</code>, <code>font-style</code>, <code>text-align</code>, <code>text-decoration</code>, <code>line-height</code></td></tr>
+                <tr><td>Größe</td><td><code>width</code>, <code>height</code>, <code>min-width</code>, <code>max-width</code>, <code>min-height</code>, <code>max-height</code></td></tr>
+                <tr><td>Abstände</td><td><code>margin</code>, <code>padding</code>, <code>gap</code></td></tr>
+                <tr><td>Hintergrund</td><td><code>background</code>, <code>background-color</code>, <code>background-image</code></td></tr>
+                <tr><td>Rahmen</td><td><code>border</code>, <code>border-radius</code></td></tr>
+                <tr><td>Layout</td><td><code>display</code>, <code>flex-direction</code>, <code>justify-content</code>, <code>align-items</code>, <code>flex-wrap</code>, <code>gap</code></td></tr>
+                <tr><td>Position</td><td><code>position</code>, <code>top</code>, <code>right</code>, <code>bottom</code>, <code>left</code>, <code>z-index</code></td></tr>
+                <tr><td>Sichtbarkeit</td><td><code>opacity</code>, <code>display</code>, <code>visibility</code></td></tr>
+            </table>
+
+            <h3>Wichtigste Werte</h3>
+
+            <table>
+                <tr><th>Eigenschaft</th><th>Werte</th></tr>
+                <tr><td><code>display</code></td><td><code>block</code>, <code>inline</code>, <code>flex</code>, <code>none</code></td></tr>
+                <tr><td><code>position</code></td><td><code>static</code>, <code>relative</code>, <code>absolute</code>, <code>fixed</code>, <code>sticky</code></td></tr>
+                <tr><td><code>text-align</code></td><td><code>left</code>, <code>center</code>, <code>right</code></td></tr>
+                <tr><td><code>flex-direction</code></td><td><code>row</code>, <code>column</code></td></tr>
+                <tr><td><code>justify-content</code></td><td><code>flex-start</code>, <code>center</code>, <code>flex-end</code>, <code>space-between</code>, <code>space-around</code>, <code>space-evenly</code></td></tr>
+                <tr><td><code>align-items</code></td><td><code>flex-start</code>, <code>center</code>, <code>flex-end</code>, <code>stretch</code></td></tr>
+                <tr><td><code>flex-wrap</code></td><td><code>wrap</code>, <code>nowrap</code></td></tr>
+            </table>
+
+        </section>
+
+        <section id="css-mini">
+
+            <h2>Mini-Spickzettel</h2>
+
+            <p>Wenn nur das Wichtigste danebenliegen soll:</p>
+
+            <pre><code>/* Grundgerüst */
+
+selektor {
+    eigenschaft: wert;
+}
+
+
+/* Element auswählen */
+
+h1 {
+    color: blue;
+}
+
+
+/* Klasse auswählen */
+
+.klasse {
+    color: blue;
+}
+
+
+/* ID auswählen */
+
+#id {
+    color: blue;
+}
+
+
+/* Text */
+
+color: red;
+font-size: 20px;
+font-family: Arial, sans-serif;
+font-weight: bold;
+text-align: center;
+
+
+/* Größe */
+
+width: 300px;
+height: 200px;
+max-width: 1000px;
+
+
+/* Abstände */
+
+margin: 20px;
+padding: 20px;
+gap: 20px;
+
+
+/* Hintergrund */
+
+background-color: lightgray;
+
+
+/* Rand */
+
+border: 1px solid black;
+border-radius: 10px;
+
+
+/* Flexbox */
+
+display: flex;
+justify-content: center;
+align-items: center;
+flex-direction: row;
+gap: 20px;
+flex-wrap: wrap;
+
+
+/* Position */
+
+position: relative;
+position: absolute;
+position: fixed;
+position: sticky;
+
+top: 0;
+right: 0;
+bottom: 0;
+left: 0;
+
+
+/* Hover */
+
+a:hover {
+    color: red;
+}
+
+
+/* Responsive */
+
+@media (max-width: 600px) {
+    ...
+}</code></pre>
+
+        </section>
+
+        <section id="css-zusammenfassung">
+
+            <h2>Zusammenfassung</h2>
+
+            <h3>Die drei wichtigsten Dinge</h3>
+
+            <div class="anatomy">
+                <div class="anatomy-part anatomy-tag">
+                    <code>h1</code>
+                    <span class="anatomy-label">Selektor — was auswählen?</span>
+                </div>
+                <div class="anatomy-part anatomy-content">
+                    <code>color</code>
+                    <span class="anatomy-label">Eigenschaft — was verändern?</span>
+                </div>
+                <div class="anatomy-part anatomy-content">
+                    <code>blue</code>
+                    <span class="anatomy-label">Wert — wie verändern?</span>
+                </div>
+            </div>
+
+            <pre><code class="lang-css">h1 {
+    color: blue;
+}</code></pre>
+
+            <p>Genau dieses Prinzip steckt hinter praktisch jedem CSS-Code.</p>
+
+            <h3>HTML + CSS als Gesamtbild</h3>
+
+            <pre><code>HTML
+│
+├── Elemente
+│   ├── h1
+│   ├── p
+│   ├── div
+│   ├── section
+│   └── a
+│
+└── Struktur und Inhalt
+
+
+CSS
+│
+├── Selektoren
+│   ├── h1
+│   ├── .klasse
+│   └── #id
+│
+├── Eigenschaften
+│   ├── color
+│   ├── font-size
+│   ├── margin
+│   ├── padding
+│   ├── width
+│   └── display
+│
+└── Werte
+    ├── blue
+    ├── 20px
+    ├── 50%
+    ├── flex
+    └── center</code></pre>
+
+            <p>
+                <strong>HTML baut die Struktur. CSS gestaltet die Struktur.</strong><br>
+                <strong>CSS = Selektor → Eigenschaft → Wert</strong>
+            </p>
+
+        </section>
+
+    </div>
+
+    </main>
+
+    </div>
+
+    <footer>
+        <p>Eigener Lernzettel für die HTML-Grundlagen.</p>
+    </footer>
+
+    <script>
+    (() => {
+        const root = document.documentElement;
+        const searchInput = document.getElementById('navSearch');
+        const modeButtons = document.querySelectorAll('.mode-btn');
+        const modePanels = document.querySelectorAll('.nav-mode, .content-mode');
+        const headerTitle = document.querySelector('header h1');
+        const headerDesc = document.querySelector('header p');
+
+        const MODE_TEXT = {
+            html: {
+                title: 'HTML-Spickzettel',
+                desc: 'Grundlagen für eine saubere index.html — Struktur, Semantik und die wichtigsten Tags im Überblick.',
+                placeholder: 'HTML durchsuchen…'
+            },
+            css: {
+                title: 'CSS-Spickzettel',
+                desc: 'Grundlagen für sauberes CSS — Selektoren, Box-Modell, Flexbox und die wichtigsten Eigenschaften im Überblick.',
+                placeholder: 'CSS durchsuchen…'
+            }
+        };
+
+        // ---------- Live-Suche im Menü (nur im aktiven Modus) ----------
+
+        function applySearchFilter() {
+            const query = searchInput.value.trim().toLowerCase();
+            const mode = root.getAttribute('data-mode');
+            const container = document.querySelector(`.nav-mode[data-mode="${mode}"]`);
+            if (!container) return;
+
+            container.querySelectorAll('details').forEach(details => {
+                let anyVisible = false;
+
+                details.querySelectorAll('li').forEach(li => {
+                    const matches = !query || li.textContent.toLowerCase().includes(query);
+                    li.hidden = !matches;
+                    if (matches) anyVisible = true;
+                });
+
+                details.hidden = !anyVisible;
+                details.open = query.length > 0 && anyVisible;
+            });
+        }
+
+        searchInput.addEventListener('input', applySearchFilter);
+
+        // ---------- HTML / CSS umschalten ----------
+
+        function setMode(mode) {
+            root.setAttribute('data-mode', mode);
+
+            modeButtons.forEach(btn => {
+                btn.setAttribute('aria-selected', String(btn.dataset.modeBtn === mode));
+            });
+
+            modePanels.forEach(panel => {
+                panel.hidden = panel.dataset.mode !== mode;
+            });
+
+            headerTitle.textContent = MODE_TEXT[mode].title;
+            headerDesc.textContent = MODE_TEXT[mode].desc;
+            searchInput.placeholder = MODE_TEXT[mode].placeholder;
+            searchInput.value = '';
+            applySearchFilter();
+
+            try { localStorage.setItem('spickzettel-mode', mode); } catch (e) {}
+        }
+
+        modeButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                setMode(btn.dataset.modeBtn);
+                window.scrollTo({ top: 0 });
+            });
+        });
+
+        let savedMode = 'html';
+        try { savedMode = localStorage.getItem('spickzettel-mode') || 'html'; } catch (e) {}
+        if (savedMode !== 'html' && savedMode !== 'css') savedMode = 'html';
+        setMode(savedMode);
+
+        // ---------- Syntax-Highlighting für Code-Blöcke ----------
+
+        function escapeHtml(str) {
+            return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+        }
+
+        function highlightTag(tag) {
+            let out = '';
+            let idx = 0;
+            const n = tag.length;
+
+            if (tag.startsWith('</')) {
+                out += '<span class="tok-punct">&lt;/</span>';
+                idx = 2;
+            } else {
+                out += '<span class="tok-punct">&lt;</span>';
+                idx = 1;
+            }
+
+            const nameMatch = /^[a-zA-Z][\w-]*/.exec(tag.slice(idx));
+            if (nameMatch) {
+                out += `<span class="tok-tag">${nameMatch[0]}</span>`;
+                idx += nameMatch[0].length;
+            }
+
+            while (idx < n) {
+                const rest = tag.slice(idx);
+
+                const wsMatch = /^\s+/.exec(rest);
+                if (wsMatch) {
+                    out += wsMatch[0];
+                    idx += wsMatch[0].length;
+                    continue;
+                }
+
+                if (rest.startsWith('/>')) {
+                    out += '<span class="tok-punct">/&gt;</span>';
+                    idx += 2;
+                    continue;
+                }
+
+                if (rest.startsWith('>')) {
+                    out += '<span class="tok-punct">&gt;</span>';
+                    idx += 1;
+                    continue;
+                }
+
+                const attrMatch = /^[a-zA-Z][\w-]*/.exec(rest);
+                if (attrMatch) {
+                    out += `<span class="tok-attr">${attrMatch[0]}</span>`;
+                    idx += attrMatch[0].length;
+
+                    const eqMatch = /^\s*=\s*/.exec(tag.slice(idx));
+                    if (eqMatch) {
+                        out += '<span class="tok-punct">=</span>';
+                        idx += eqMatch[0].length;
+
+                        const strMatch = /^"[^"]*"|^'[^']*'/.exec(tag.slice(idx));
+                        if (strMatch) {
+                            out += `<span class="tok-string">${escapeHtml(strMatch[0])}</span>`;
+                            idx += strMatch[0].length;
+                        }
+                    }
+                    continue;
+                }
+
+                out += escapeHtml(rest[0]);
+                idx += 1;
+            }
+
+            return out;
+        }
+
+        function highlight(raw) {
+            let out = '';
+            let i = 0;
+            const len = raw.length;
+
+            while (i < len) {
+                if (raw.startsWith('<!--', i)) {
+                    let end = raw.indexOf('-->', i);
+                    end = end === -1 ? len : end + 3;
+                    out += `<span class="tok-comment">${escapeHtml(raw.slice(i, end))}</span>`;
+                    i = end;
+                    continue;
+                }
+
+                if (raw[i] === '<' && /^<\/?[a-zA-Z]/.test(raw.slice(i))) {
+                    let end = raw.indexOf('>', i);
+                    end = end === -1 ? len - 1 : end;
+                    out += highlightTag(raw.slice(i, end + 1));
+                    i = end + 1;
+                    continue;
+                }
+
+                out += escapeHtml(raw[i]);
+                i += 1;
+            }
+
+            return out;
+        }
+
+        // ---------- Syntax-Highlighting für CSS-Blöcke ----------
+
+        // Schaut voraus, ob als Nächstes ein Selektor (endet mit "{") oder
+        // eine Deklaration (endet mit ";" oder "}") kommt. Nur so lassen sich
+        // verschachtelte Regeln (@media) und lose "eigenschaft: wert;"-Zeilen
+        // ohne umschließende Klammern gleichermaßen richtig einfärben.
+        function decideCssMode(raw, pos, len) {
+            let k = pos;
+            while (k < len) {
+                if (raw.startsWith('/*', k)) {
+                    const end = raw.indexOf('*/', k);
+                    k = end === -1 ? len : end + 2;
+                    continue;
+                }
+                if (raw[k] === '{') return 'selector';
+                if (raw[k] === ';' || raw[k] === '}') return 'prop';
+                k += 1;
+            }
+            return 'prop';
+        }
+
+        function highlightCSS(raw) {
+            const len = raw.length;
+            let out = '';
+            let i = 0;
+            let mode = decideCssMode(raw, 0, len);
+
+            while (i < len) {
+                if (raw.startsWith('/*', i)) {
+                    let end = raw.indexOf('*/', i);
+                    end = end === -1 ? len : end + 2;
+                    out += `<span class="tok-comment">${escapeHtml(raw.slice(i, end))}</span>`;
+                    i = end;
+                    continue;
+                }
+
+                const ch = raw[i];
+
+                if (ch === '{' || ch === '}' || ch === ';') {
+                    out += `<span class="tok-punct">${ch}</span>`;
+                    i += 1;
+                    mode = decideCssMode(raw, i, len);
+                    continue;
+                }
+
+                if (ch === ':' && mode === 'prop') {
+                    out += '<span class="tok-punct">:</span>';
+                    i += 1;
+                    mode = 'value';
+                    continue;
+                }
+
+                if (/\s/.test(ch)) {
+                    out += ch;
+                    i += 1;
+                    continue;
+                }
+
+                let j = i;
+                while (
+                    j < len &&
+                    raw[j] !== '{' && raw[j] !== '}' && raw[j] !== ';' &&
+                    !(raw[j] === ':' && mode === 'prop') &&
+                    !/\s/.test(raw[j]) &&
+                    !raw.startsWith('/*', j)
+                ) {
+                    j += 1;
+                }
+                if (j === i) j += 1;
+
+                const cls = mode === 'prop' ? 'tok-property'
+                          : mode === 'value' ? 'tok-value'
+                          : 'tok-selector';
+                out += `<span class="${cls}">${escapeHtml(raw.slice(i, j))}</span>`;
+                i = j;
+            }
+
+            return out;
+        }
+
+        document.querySelectorAll('pre > code').forEach(block => {
+            block.innerHTML = block.classList.contains('lang-css')
+                ? highlightCSS(block.textContent)
+                : highlight(block.textContent);
+        });
+    })();
+    </script>
+
+</body>
+</html>
